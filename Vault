@@ -1,0 +1,146 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vault Miner</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: radial-gradient(#111, #000);
+      color: #fff;
+      text-align: center;
+      padding: 2rem;
+      overflow-x: hidden;
+    }
+    .container {
+      max-width: 400px;
+      margin: auto;
+      background: #1a1a1a;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(255, 255, 0, 0.3);
+    }
+    h1 {
+      margin-bottom: 1rem;
+      font-size: 1.8rem;
+      color: gold;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 0.75rem;
+      margin: 1rem 0;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    .btn {
+      background: gold;
+      color: black;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: background 0.3s;
+    }
+    .btn:hover {
+      background: #ffcc00;
+    }
+    .dashboard {
+      margin-top: 2rem;
+      display: none;
+    }
+    .eth-display {
+      font-size: 2rem;
+      margin: 1rem 0;
+      color: #00f0ff;
+      text-shadow: 0 0 8px #00f0ff;
+    }
+    a {
+      display: block;
+      margin-top: 2rem;
+      color: #0af;
+      text-decoration: none;
+    }
+    .status-bar {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: lime;
+    }
+    .progress {
+      width: 100%;
+      height: 10px;
+      background: #333;
+      border-radius: 5px;
+      overflow: hidden;
+      margin: 1rem 0;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: lime;
+      transition: width 0.3s;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Vault Miner</h1>
+    <p>Secure Access Portal</p><div class="input-group">
+  <input type="text" id="accessCode" placeholder="Enter your access code" />
+  <button class="btn" onclick="grantAccess()">Access Vault</button>
+</div>
+
+<div class="dashboard" id="dashboard">
+  <p>User #<span id="userID"></span> | Tier 2 Active</p>
+  <div class="status-bar">Environment Ready | Network Hash Rate: 987 TH/s</div>
+  <button class="btn" onclick="startMining()">Start Mining</button>
+
+  <div class="eth-display" id="ethDisplay">0.000000 ETH</div>
+  <div id="usdDisplay">$0.00 USD</div>
+  <div class="progress">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+</div>
+
+<a href="https://t.me/yourTelegramUsername" target="_blank">Contact Us / Help</a>
+
+  </div>  <script>
+    const ETH_PRICE = 3621.87; // Use real API if needed
+    let mining = false;
+    let balance = 0.0;
+    let interval;
+
+    function grantAccess() {
+      const code = document.getElementById('accessCode').value.trim();
+      if (!code) return alert('Access code required.');
+
+      document.querySelector('.input-group').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      document.getElementById('userID').innerText = Math.floor(Math.random() * 900000 + 100000);
+    }
+
+    function startMining() {
+      if (mining) return;
+      mining = true;
+      let progress = 0;
+      interval = setInterval(() => {
+        if (balance >= 1.0) {
+          clearInterval(interval);
+          document.getElementById('ethDisplay').innerText = '1.000000 ETH';
+          document.getElementById('usdDisplay').innerText = `$${(1.0 * ETH_PRICE).toFixed(2)} USD`;
+          document.getElementById('progressBar').style.width = '100%';
+          alert('Mining limit reached: 1 ETH');
+          return;
+        }
+        balance += 0.00001;
+        progress = (balance / 1.0) * 100;
+        document.getElementById('ethDisplay').innerText = balance.toFixed(6) + ' ETH';
+        document.getElementById('usdDisplay').innerText = `$${(balance * ETH_PRICE).toFixed(2)} USD`;
+        document.getElementById('progressBar').style.width = progress + '%';
+      }, 200);
+    }
+  </script></body>
+</html>
